@@ -11,11 +11,21 @@ public class MarkovModel {
     HashMap<Integer, String> chunks;
     float[][] probabilities;
 
+    /**
+     * Create Markov Model from id-chunk map and transition table
+     * @param chunks HashMap of unique chunk index to unique chunk
+     * @param probabilities transition table (indices are chunk ids)
+     */
     private MarkovModel(HashMap<Integer, String> chunks, float[][] probabilities) {
         this.chunks = chunks;
         this.probabilities = probabilities;
     }
 
+    /**
+     * Parses manual or programmatically generated analysis file to MarkovModel
+     * @param filename name of file containing Markov data (see README for format)
+     * @return MarkovModel representation of input file
+     */
     public static MarkovModel fromFile(String filename) {
         try {
             // Read in file
@@ -51,6 +61,12 @@ public class MarkovModel {
         }
         return null;
     }
+
+    /**
+     * Writes MarkovModel object to file (see README for format)
+     * @param filename file to write to
+     * @return true if write was successful, else false
+     */
     public boolean toFile(String filename) {
         try {
             PrintWriter p = new PrintWriter(filename);
@@ -58,6 +74,9 @@ public class MarkovModel {
             p.write(chunks.size() + " " + (chunks.get(0).split("\n").length) + "\n");
             // Print chunk probabilities and chunks
             for (int i = 0; i < probabilities.length; i++) {
+                if(chunks.get(i) == null) {
+                    break;
+                }
                 for (int j = 0; j < probabilities[i].length; j++) {
                     p.write(probabilities[i][j] + (j == probabilities[i].length ? "" : " "));
                 }
@@ -87,10 +106,15 @@ public class MarkovModel {
      */
     public static void main(String[] args) {
         MarkovModel m = fromFile("levels/levelBreakdowns/notchlvl2_analysis");
+        m = parseLevel("levels/notch/lvl-7.txt");
+        m.toFile("levels/autoBreakdown/notchlvl7_analysis");
+        MarkovModel m1 = parseLevel("levels/ore/lvl-17.txt");
+        m1.toFile("levels/autoBreakdown/orelvl17_analysis");
+        MarkovModel m2 = parseLevel("levels/original/lvl-12.txt");
+        m2.toFile("levels/autoBreakdown/originallvl12_analysis");
         HashMap<Integer, String> chunks = m.getChunks();
         float[][] probabilities = m.getProbabilities();
         System.out.println("Markov complete");
-        m.toFile("testFile.txt");
     }
 
     /**
