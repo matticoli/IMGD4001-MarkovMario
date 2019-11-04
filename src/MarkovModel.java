@@ -1,8 +1,10 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Arrays;
+/**
+ * MarkovModel - Object representation of Markov transition table for Mario level
+ * IMGD4100 B19 - Mario Level Generator
+ * @author Mikel Matticoli & Diana Kumykova
+ */
+
+import java.io.*;
 import java.util.HashMap;
 
 public class MarkovModel {
@@ -49,6 +51,27 @@ public class MarkovModel {
         }
         return null;
     }
+    public boolean toFile(String filename) {
+        try {
+            PrintWriter p = new PrintWriter(filename);
+            // Print metadata line (#chunks and chunkSize)
+            p.write(chunks.size() + " " + (chunks.get(0).split("\n").length) + "\n");
+            // Print chunk probabilities and chunks
+            for (int i = 0; i < probabilities.length; i++) {
+                for (int j = 0; j < probabilities[i].length; j++) {
+                    p.write(probabilities[i][j] + (j == probabilities[i].length ? "" : " "));
+                }
+                p.write("\n");
+                p.write(chunks.get(i));
+            }
+            p.flush();
+            p.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public HashMap<Integer, String> getChunks() {
         return chunks;
@@ -67,6 +90,7 @@ public class MarkovModel {
         HashMap<Integer, String> chunks = m.getChunks();
         float[][] probabilities = m.getProbabilities();
         System.out.println("Markov complete");
+        m.toFile("testFile.txt");
     }
 
     /**
