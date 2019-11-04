@@ -1,7 +1,9 @@
 package levelGenerators.Markov;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Random;
@@ -34,7 +36,7 @@ public class LevelGenerator implements MarioLevelGenerator{
      * Generates a level based on the probabilities and hashmap of the Markov Model created from
      * sampling levels
      * */
-    public String generateLevel(int columns){
+    public String generateLevel(int columns) throws IOException {
 
         String levelString = "";
         int columnsLeft = columns;
@@ -44,17 +46,22 @@ public class LevelGenerator implements MarioLevelGenerator{
         String[] mapBase = new String[columns]; //value is chunk string
 
         int chunkID = (int)(Math.random() * (100));
+        while (model.getChunks().get(chunkID) == null){
+            chunkID = (int)(Math.random() * (100));
+        }
         mapBase[0] = model.getChunks().get(chunkID);
         int indexNewline = model.getChunks().get(chunkID).indexOf("\n"); //first newline
         //if first newline appears at index 3, that chunk has a row size of 4; therefore, 4 columns are account for already.
         //subtract 4 from total number of columns needed to be filled in; i.e. if total columns must be 20, only need to fill in 16 more.
-        columnsLeft = columns - (indexNewline + 1);
+        columnsLeft = columns - (indexNewline);
 
         //adapted from
         //https://stackoverflow.com/questions/6737283/weighted-randomness-in-java
         //start from index 1 since index 0 is already filled with first random string
-        for (int i = 0; columnsLeft != 0; i++){
+        int i = 0;
+        while (columnsLeft > 0){
             //get probs for chunk
+
             double totalWeight = 1.0d; //this should always be 1
 
             // Now choose a random item
@@ -75,6 +82,7 @@ public class LevelGenerator implements MarioLevelGenerator{
 
             indexNewline = model.getChunks().get(chunkID).indexOf("\n"); //first newline
             columnsLeft = columns - (indexNewline + 1);
+            i++;
 
             //TODO: how to stop and cut off too long columns
         }
@@ -91,7 +99,13 @@ public class LevelGenerator implements MarioLevelGenerator{
             for(int y = 0; y < 15; y++){ //16 is height of each map
                 levelString = levelString + splitChunks[y][t]; //add first split of each splitChunk, then second, etc
             }
+            levelString  = levelString + "\n"; //add newline between rows
         }
+
+        FileWriter fileWriter = new FileWriter("C:/Users/di/Documents/GitHub/IMGD4001-MarkovMario");
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+        printWriter.print(levelString);
+        printWriter.close();
 
 
         //hashmap is id string
@@ -104,8 +118,6 @@ public class LevelGenerator implements MarioLevelGenerator{
         //create array of string chunks to build the level
         //to create actual string, go though each string at same index; once reach n number of strings, insert newline
         //and circle back to next index value
-
-
 
 
         return levelString;
@@ -122,17 +134,20 @@ public class LevelGenerator implements MarioLevelGenerator{
     }
 
     @Override
-    public String getGeneratedLevel(MarioLevelModel model, MarioTimer timer) {
-        rnd = new Random();
-        model.clearMap();
-        for(int i=0; i<model.getWidth() / sampleWidth; i++){
-            try {
-                model.copyFromString(i*sampleWidth, 0, i*sampleWidth, 0, sampleWidth, model.getHeight(), this.getRandomLevel());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return model.getMap();
+    public String getGeneratedLevel(MarioLevelModel model, MarioTimer timer) throws IOException {
+
+        generateLevel(20);
+//        rnd = new Random();
+//        model.clearMap();
+//        for(int i=0; i<model.getWidth() / sampleWidth; i++){
+//            try {
+//                model.copyFromString(i*sampleWidth, 0, i*sampleWidth, 0, sampleWidth, model.getHeight(), this.getRandomLevel());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return model.getMap();
+        return "test";
     }
 
     @Override
