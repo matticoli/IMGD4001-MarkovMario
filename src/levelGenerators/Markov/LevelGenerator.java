@@ -42,7 +42,7 @@ public class LevelGenerator implements MarioLevelGenerator{
         int columnsLeft = columns;
         int columnsExtra = 0;
         //MarkovModel model = MarkovModel.parseLevel("levels/notch/lvl-1.txt");
-        MarkovModel model = MarkovModel.fromFile("levels/levelBreakdowns/hopperlvl12_analysis");
+        MarkovModel model = MarkovModel.fromFile("levels/levelBreakdowns/hopperlvl5_analysis");
 
         //at largest mapBase can have columns number of strings (1 column per string); usually each string will be a chunk, so more than 1 column
         String[] mapBase = new String[columns]; //value is chunk string
@@ -62,27 +62,26 @@ public class LevelGenerator implements MarioLevelGenerator{
         //start from index 1 since index 0 is already filled with first random string
         int i = 1;
         while (columnsLeft > 0){
-            //get probs for chunk
+            try {
+                //get probs for chunk
 
-            double totalWeight = 1.0d; //this should always be 1
+                double totalWeight = 1.0d; //this should always be 1
 
-            // Now choose a random item
-            int chunkIndex = -1;
-            double random = Math.random();
-            for (int m = 0; m < model.getProbabilities().length; ++m)
-            {
-                random -= model.getProbabilities()[chunkID][m];
-                if (random <= 0.0d)
-                {
-                    chunkIndex = m;
-                    break;
+                // Now choose a random item
+                int chunkIndex = -1;
+                double random = Math.random();
+                for (int m = 0; m < model.getProbabilities().length; ++m) {
+                    random -= model.getProbabilities()[chunkID][m];
+                    if (random <= 0.0d) {
+                        chunkIndex = m;
+                        break;
+                    }
                 }
-            }
-            String nextChunk = model.getChunks().get(chunkIndex); //get randomly chosen chunk string
-            mapBase[i] = nextChunk; //place next chunk string into list of chunks
-            chunkID = chunkIndex; //move to next chunk
+                String nextChunk = model.getChunks().get(chunkIndex); //get randomly chosen chunk string
+                mapBase[i] = nextChunk; //place next chunk string into list of chunks
+                chunkID = chunkIndex; //move to next chunk
 
-            indexNewline = model.getChunks().get(chunkID).indexOf("\n"); //first newline
+                indexNewline = model.getChunks().get(chunkID).indexOf("\n"); //first newline
 
             columnsLeft = columnsLeft - (indexNewline);
             //if next chunk is 3 columns but only need 2, extra is 1
@@ -90,8 +89,11 @@ public class LevelGenerator implements MarioLevelGenerator{
                 columnsExtra = columnsLeft * -1;
             }
             i++;
+            } catch (NullPointerException e){
+                System.out.println("Invalid level; generate again.");
+                return "sorry";
+            }
 
-            //TODO: how to stop and cut off too long columns
         }
 
         //once mapBase is filled build actual string
@@ -146,19 +148,7 @@ public class LevelGenerator implements MarioLevelGenerator{
 
     @Override
     public String getGeneratedLevel(MarioLevelModel model, MarioTimer timer) throws IOException {
-
-        generateLevel(120);
-//        rnd = new Random();
-//        model.clearMap();
-//        for(int i=0; i<model.getWidth() / sampleWidth; i++){
-//            try {
-//                model.copyFromString(i*sampleWidth, 0, i*sampleWidth, 0, sampleWidth, model.getHeight(), this.getRandomLevel());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return model.getMap();
-        return "test";
+        return generateLevel(120);
     }
 
     @Override
