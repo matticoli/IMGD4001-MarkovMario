@@ -1,3 +1,7 @@
+## Build instructions
+
+To build, open project in IntelliJ Idea and click the run button in GenerateLevel.java. See file structure section below and comments for alternative parameters
+
 ## Project structure
 `levels/levelBreakdowns/` Input files from manual analysis
 
