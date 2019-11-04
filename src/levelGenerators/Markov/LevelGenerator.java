@@ -125,7 +125,7 @@ public class LevelGenerator implements MarioLevelGenerator {
             levelString = levelString + "\n"; //add newline between rows
         }
 
-        FileWriter fileWriter = new FileWriter("C:/Users/di/Documents/GitHub/IMGD4001-MarkovMario/sample.txt");
+        FileWriter fileWriter = new FileWriter("MarkovGeneratedLevel.txt");
         PrintWriter printWriter = new PrintWriter(fileWriter);
         printWriter.print(levelString);
         printWriter.close();
