@@ -3,6 +3,7 @@
  * IMGD4100 B19 - Mario Level Generator
  * @author Mikel Matticoli & Diana Kumykova
  */
+package MarkovModel;
 
 import java.io.*;
 import java.util.HashMap;
