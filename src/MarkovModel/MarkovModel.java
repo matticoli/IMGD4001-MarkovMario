@@ -175,14 +175,14 @@ public class MarkovModel {
                 chunkStrings.put(chunkIds.get(key), key);
             }
             // Build probability table
-            float[][] probability = new float[occurence.length][occurence[0].length];
-            for (int j = 0; j < occurence.length; j++) {
+            float[][] probability = new float[chunkIds.size()][chunkIds.size()];
+            for (int j = 0; j < chunkIds.size(); j++) {
                 int[] chunkOcc = occurence[j];
                 float sum = 0;
-                for (int i = 0; i < chunkOcc.length; i++) {
+                for (int i = 0; i < chunkIds.size(); i++) {
                     sum += occurence[j][i];
                 }
-                for (int i = 0; i < chunkOcc.length; i++) {
+                for (int i = 0; i < chunkIds.size(); i++) {
                     probability[j][i] = occurence[j][i] / sum;
                 }
             }
