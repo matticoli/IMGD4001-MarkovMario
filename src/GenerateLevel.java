@@ -23,7 +23,7 @@ public class GenerateLevel {
 	System.out.println("****************************************************************");
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 	MarioLevelGenerator generator = new levelGenerators.Markov.LevelGenerator();
 	String level = generator.getGeneratedLevel(new MarioLevelModel(150, 16), new MarioTimer(5*60*60*1000));
 	MarioGame game = new MarioGame();

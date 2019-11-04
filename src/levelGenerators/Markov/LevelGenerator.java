@@ -40,7 +40,9 @@ public class LevelGenerator implements MarioLevelGenerator{
 
         String levelString = "";
         int columnsLeft = columns;
-        MarkovModel model = MarkovModel.parseLevel("levels/notch/lvl-1.txt");
+        int columnsExtra = 0;
+        //MarkovModel model = MarkovModel.parseLevel("levels/notch/lvl-1.txt");
+        MarkovModel model = MarkovModel.fromFile("levels/levelBreakdowns/hopperlvl12_analysis");
 
         //at largest mapBase can have columns number of strings (1 column per string); usually each string will be a chunk, so more than 1 column
         String[] mapBase = new String[columns]; //value is chunk string
@@ -58,7 +60,7 @@ public class LevelGenerator implements MarioLevelGenerator{
         //adapted from
         //https://stackoverflow.com/questions/6737283/weighted-randomness-in-java
         //start from index 1 since index 0 is already filled with first random string
-        int i = 0;
+        int i = 1;
         while (columnsLeft > 0){
             //get probs for chunk
 
@@ -81,7 +83,12 @@ public class LevelGenerator implements MarioLevelGenerator{
             chunkID = chunkIndex; //move to next chunk
 
             indexNewline = model.getChunks().get(chunkID).indexOf("\n"); //first newline
-            columnsLeft = columns - (indexNewline + 1);
+
+            columnsLeft = columnsLeft - (indexNewline);
+            //if next chunk is 3 columns but only need 2, extra is 1
+            if(columnsLeft < 0){
+                columnsExtra = columnsLeft * -1;
+            }
             i++;
 
             //TODO: how to stop and cut off too long columns
@@ -91,18 +98,22 @@ public class LevelGenerator implements MarioLevelGenerator{
         //for each string
         String[][] splitChunks = new String[mapBase.length][];
         for(int n = 0; n < mapBase.length; n++){
-            String[] split  = mapBase[n].split("\n"); //split string by newline to get array of rows
-            splitChunks[n] = split;
+            if(mapBase[n] != null) {
+                String[] split = mapBase[n].split("\n"); //split string by newline to get array of rows
+                splitChunks[n] = split;
+            }
         }
 
-        for (int t = 0; t < mapBase.length; t++){
-            for(int y = 0; y < 15; y++){ //16 is height of each map
-                levelString = levelString + splitChunks[y][t]; //add first split of each splitChunk, then second, etc
+        for (int t = 0; t < 16; t++){
+            for(int y = 0; y < splitChunks.length; y++){ //16 is height of each map
+                if(splitChunks[y] != null) {
+                    levelString = levelString + splitChunks[y][t]; //add first split of each splitChunk, then second, etc
+                }
             }
             levelString  = levelString + "\n"; //add newline between rows
         }
 
-        FileWriter fileWriter = new FileWriter("C:/Users/di/Documents/GitHub/IMGD4001-MarkovMario");
+        FileWriter fileWriter = new FileWriter("C:/Users/di/Documents/GitHub/IMGD4001-MarkovMario/sample.txt");
         PrintWriter printWriter = new PrintWriter(fileWriter);
         printWriter.print(levelString);
         printWriter.close();
@@ -136,7 +147,7 @@ public class LevelGenerator implements MarioLevelGenerator{
     @Override
     public String getGeneratedLevel(MarioLevelModel model, MarioTimer timer) throws IOException {
 
-        generateLevel(20);
+        generateLevel(120);
 //        rnd = new Random();
 //        model.clearMap();
 //        for(int i=0; i<model.getWidth() / sampleWidth; i++){
