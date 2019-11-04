@@ -24,13 +24,11 @@ public class GenerateLevel {
     }
     
     public static void main(String[] args) throws IOException {
-	MarioLevelGenerator generator = new levelGenerators.Markov.LevelGenerator();
+    	//specify apprroximate number of columns, the preferred input file to generate level, and true if the
+		//input file is a pregenerated Markov file; put false for pre-existing levels
+	MarioLevelGenerator generator = new levelGenerators.Markov.LevelGenerator(120, "levels/levelBreakdowns/hopperlvl7_analysis", true);
 	String level = generator.getGeneratedLevel(new MarioLevelModel(150, 16), new MarioTimer(5*60*60*1000));
 	MarioGame game = new MarioGame();
-	if(level.equals("sorry")){
-		System.out.println("Invalid level generated; please run again.");
-		return;
-	}
 	 //printResults(game.playGame(level, 200, 0));
 	printResults(game.runGame(new agents.robinBaumgarten.Agent(), level, 20, 0, true));
     }
