@@ -1,3 +1,5 @@
+package MarkovModel;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -33,11 +35,11 @@ public class MarkovModel {
     }
 
     /**
-     * Returns MarkovModel based on analysis of given level file
+     * Returns MarkovModel.MarkovModel based on analysis of given level file
      * @param filename path of level file to analyze
      * @return
      */
-    static MarkovModel parseLevel(String filename) {
+    public static MarkovModel parseLevel(String filename) {
         try {
             BufferedReader r = new BufferedReader(new FileReader(filename));
             // Store current line
