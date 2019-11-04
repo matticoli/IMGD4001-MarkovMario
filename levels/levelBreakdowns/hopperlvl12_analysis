@@ -1,8 +1,5 @@
-# hopper level 12
-```
-1 16  // 3 chunks, height 2
-0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+18 16
+0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ------
 ------
 ------
@@ -19,10 +16,7 @@
 ------
 ------
 XXXXXX
-################################## 2
-1 16  // 3 chunks, height 2
-0 0.25 0.25 0 0 0 0 0 0 0 0 0.25 0 0 0.25 0 0 0// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0.25 0.25 0 0 0 0 0 0 0 0 0.25 0 0 0.25 0 0 0
 -----
 -----
 -----
@@ -39,10 +33,7 @@ XXXXXX
 -----
 %%%%%
 |||||
-################################## 3
-1 16  // 3 chunks, height 2
-0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 --------------
 --------------
 --------------
@@ -59,10 +50,7 @@ XXXXXX
 --------------
 --------------
 XXXXXXXXXXXXXX
-################################## 4
-1 16  // 3 chunks, height 2
-0 0 0 0 0.5 0 0.25 0 0 0 0 0 0.25 0 0 0 0 0// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 0 0.5 0 0.25 0 0 0 0 0 0.25 0 0 0 0 0
 ----------
 ----------
 ----------
@@ -79,10 +67,7 @@ XXXXXXXXXXXXXX
 ||||||||||
 ||||||||||
 ||||||||||
-################################## 5
-1 16  // 3 chunks, height 2
-0 0 0 0 0 0.67 0 0 0 0 0 0 0 0 0 0 0.33 0// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 0 0 0.67 0 0 0 0 0 0 0 0 0 0 0.33 0
 --
 --
 --
@@ -99,10 +84,7 @@ r-
 |%
 ||
 ||
-################################## 6
-1 16  // 3 chunks, height 2
-0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 -------------
 -------------
 -------------
@@ -119,10 +101,7 @@ gggggggggggkk
 %%%%%%%%%%%%%
 |||||||||||||
 |||||||||||||
-################################## 7
-1 16  // 3 chunks, height 2
-0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0
 ---
 ---
 ---
@@ -139,10 +118,7 @@ gggggggggggkk
 ---
 ---
 ---
-################################## 8
-1 16  // 3 chunks, height 2
-0 0 0 0 0 0 0 0 0.5 0 0 0 0 0 0 0 0 0.5// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 0 0 0 0 0 0.5 0 0 0 0 0 0 0 0 0.5
 ------
 ------
 ------
@@ -159,10 +135,7 @@ gggggggggggkk
 %%%%%%
 ||||||
 ||||||
-################################## 9
-1 16  // 3 chunks, height 2
-0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0
 -----
 -----
 -----
@@ -179,10 +152,7 @@ g----
 %%%%%
 |||||
 |||||
-################################## 10
-1 16  // 3 chunks, height 2
-0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0
 ----
 ----
 ----
@@ -199,10 +169,7 @@ g----
 g---
 ----
 ----
-################################## 11
-1 16  // 3 chunks, height 2
-0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 -------
 -------
 -------
@@ -219,10 +186,7 @@ g---
 --|||||
 %%%%%%%
 |||||||
-################################## 12
-1 16  // 3 chunks, height 2
-0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0
 -----------
 -----------
 -----------
@@ -239,10 +203,7 @@ CSU2SCCCS--
 -----------
 %%%%%%%%%%%
 |||||||||||
-################################## 13
-1 16  // 3 chunks, height 2
-0 0.33 0 0 0 0 0 0 0 0 0 0 0 0.33 0 0 0.33 0// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0.33 0 0 0 0 0 0 0 0 0 0 0 0.33 0 0 0.33 0
 -----
 -----
 -----
@@ -259,10 +220,7 @@ CSU2SCCCS--
 -----
 -----
 -----
-################################## 14
-1 16  // 3 chunks, height 2
-0 0 0 0.5 0 0 0 0 0 0 0 0 0.5 0 0 0 0 0// probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 0.5 0 0 0 0 0 0 0 0 0.5 0 0 0 0 0
 ---
 ---
 ---
@@ -279,10 +237,7 @@ CSU2SCCCS--
 |||
 |||
 |||
-################################## 15
-1 16  // 3 chunks, height 2
-0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0.5 0 0 0 // probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0.5 0 0 0 
 -----
 -----
 -----
@@ -299,10 +254,7 @@ g----
 |||||
 |||||
 |||||
-################################## 16
-1 16  // 3 chunks, height 2
-0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 // probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
 ----------
 ----------
 ----------
@@ -319,10 +271,7 @@ ggkggkggkg
 %%%%%%%%%%
 ||||||||||
 ||||||||||
-################################## 17
-1 16  // 3 chunks, height 2
-0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 // probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 
 --
 --
 --
@@ -339,10 +288,7 @@ ggkggkggkg
 %%
 ||
 ||
-################################## 18
-1 16  // 3 chunks, height 2
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 // probability distribution for other chunks proceding this one (space-separated)
-# // actual level text
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
 --------------
 --------------
 --------------
@@ -359,10 +305,3 @@ ggkggkggkg
 ||||||||||||||
 ||||||||||||||
 ||||||||||||||
-$ // all chunks are unique
-#
-0 0 0
-
-
-// ^empty chunk for EOL
-```

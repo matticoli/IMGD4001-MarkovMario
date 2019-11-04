@@ -2,19 +2,52 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class MarkovModel {
     HashMap<Integer, String> chunks;
     float[][] probabilities;
 
-    MarkovModel(HashMap<Integer, String> chunks, float[][] probabilities) {
+    private MarkovModel(HashMap<Integer, String> chunks, float[][] probabilities) {
         this.chunks = chunks;
         this.probabilities = probabilities;
     }
 
-    MarkovModel(String filename) {
-        //TODO: Implement
+    public static MarkovModel fromFile(String filename) {
+        try {
+            // Read in file
+            BufferedReader r = new BufferedReader(new FileReader(filename));
+            String str = r.readLine();
+            String[] l1 = str.split(" ");
+            // Get metadata from line 1
+            int numChunks = Integer.parseInt(l1[0]);
+            int chunkHeight = Integer.parseInt(l1[1]);
+            float[][] probabilities = new float[numChunks][numChunks];
+            HashMap<Integer, String> chunks = new HashMap<>();
+            // get chunks
+            for (int i = 0; i < numChunks; i++) {
+                String line = r.readLine();
+                String[] probsStrArr = line.split(" ");
+                // Fill probabilities into transition table
+                for (int j = 0; j < numChunks; j++) {
+                    probabilities[i][j] = Float.parseFloat(probsStrArr[j]);
+                }
+                // get chunk
+                line = "";
+                for (int k = 0; k < chunkHeight; k++) {
+                    line += r.readLine() + "\n";
+                }
+                // add chunk to hashmap
+                chunks.put(i, line);
+            }
+            return new MarkovModel(chunks, probabilities);
+        } catch (FileNotFoundException e) {
+            System.out.println("No such file");
+        } catch (IOException e) {
+            System.out.println("Error reading file");
+        }
+        return null;
     }
 
     public HashMap<Integer, String> getChunks() {
@@ -25,8 +58,12 @@ public class MarkovModel {
         return probabilities;
     }
 
+    /**
+     * Main method for testing - set breakpoint at line
+     * @param args not used
+     */
     public static void main(String[] args) {
-        MarkovModel m = parseLevel("levels/notch/lvl-1.txt");
+        MarkovModel m = fromFile("levels/levelBreakdowns/notchlvl2_analysis");
         HashMap<Integer, String> chunks = m.getChunks();
         float[][] probabilities = m.getProbabilities();
         System.out.println("Markov complete");
@@ -37,7 +74,7 @@ public class MarkovModel {
      * @param filename path of level file to analyze
      * @return
      */
-    static MarkovModel parseLevel(String filename) {
+    public static MarkovModel parseLevel(String filename) {
         try {
             BufferedReader r = new BufferedReader(new FileReader(filename));
             // Store current line
