@@ -37,6 +37,6 @@ public class PlayLevel {
 		if(args.length > 1 && args[1].equalsIgnoreCase("human"))
 			game.runGame(new agents.human.Agent(), getLevel("levels/ore/lvl-36.txt"), 60);
 		else
-			printResults(game.runGame(new agents.robinBaumgarten.Agent(), getLevel("levels/original/lvl-1.txt"), 20, 0, true));
+			printResults(game.runGame(new agents.trondEllingsen.Agent(), getLevel("levels/original/lvl-1.txt"), 20, 0, true));
     }
 }
