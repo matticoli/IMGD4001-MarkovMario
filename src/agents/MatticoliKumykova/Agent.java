@@ -320,6 +320,8 @@ public class Agent implements MarioAgent {
                 System.out.println("this is a stair below me!");
                 setJump(JumpType.WALL, 3);
 
+            } else if(maybe(10) && jumpType == JumpType.NONE){
+                setJump(JumpType.WALL, (int)(Math.random() * 7)+3);
             }
         } else {
             jumpCount++;
@@ -392,6 +394,8 @@ public class Agent implements MarioAgent {
                 break;
             case ONWARDS:
                 System.out.println("am going onwards!");
+
+                System.out.println(jumpType + " " + jumpCount + " / " + jumpSize);
                 //break;
             default:
                 action[MarioActions.LEFT.getValue()] = isFalling && ((dangerOfEnemy && dangerOfEnemyAbove) || dangerOfGap);
