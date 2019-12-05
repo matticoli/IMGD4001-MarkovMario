@@ -14,3 +14,7 @@ If prompted, select installed SDK from the dropdown (Tested on Java 8 and 11)
 - `Agent.java` - Agent source code
 
 `src/PlayLevel.java` Launch level with agent
+
+## References
+`agents/trondEllingsen` Trond Ellingsen sample agent
+`agents/michal` Michal sample agent
