@@ -207,7 +207,7 @@ public class Agent implements MarioAgent {
      * @return true if obstacle of specified type exists; else false
      */
     private boolean thereIsObstacle(int[][] scene) {
-        int[] inFrontOf = new int[] { getLocation(1, 0, scene), getLocation(2, 0, scene) };
+        int[] inFrontOf = new int[] { getLocation(1, 0, scene), getLocation(2, 0, scene), getLocation(2, -1, scene) };
 
         for (int i = 0; i < inFrontOf.length; i++) {
             if (inFrontOf[i] == 17 || inFrontOf[i] == 23 || inFrontOf[i] == 24) {
@@ -237,7 +237,7 @@ public class Agent implements MarioAgent {
      * @return false if empty block; else true
      */
     private boolean thereIsStair(int[][] scene) {
-        int[] below = new int[] { getLocation(1, -1, scene) , getLocation(1, -2, scene)};
+        int[] below = new int[] { getLocation(1, 1, scene) , getLocation(1, 2, scene)};
 
         if(below[0] == 0 && below[1] != 0) {
             return true;
@@ -294,6 +294,7 @@ public class Agent implements MarioAgent {
         } else if (model.mayMarioJump()) {
             final int wallHeight = getWallHeight(model.getMarioScreenTilePos()[0], model.getMarioScreenTilePos()[1],
                     model.getScreenSceneObservation());
+            System.out.println(wallHeight);
             if (dangerOfGap && marioSpeed > 0) {
                 System.out.println("danger of gap wall!");
                 setJump(JumpType.GAP, marioSpeed < 6 ? (int) (9 - marioSpeed) : 1);
@@ -317,7 +318,8 @@ public class Agent implements MarioAgent {
                 //state = State.IDLE;
             } else if(stairs){
                 System.out.println("this is a stair below me!");
-                setJump(JumpType.GAP, 3);
+                setJump(JumpType.WALL, 3);
+
             }
         } else {
             jumpCount++;
