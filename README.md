@@ -1,36 +1,12 @@
+### IMGD 4100 B19 - Mario Turing Test
+##### Mikel Matticoli and Diana Kumykova
+
 ## Build instructions
 
-To build, open project in IntelliJ Idea and click the run button in GenerateLevel.java. See file structure section below and comments for alternative parameters
+To build, open project in IntelliJ Idea and click the run button in PlayLevel.java. See file structure section below and comments for alternative parameters
 
 ## Project structure
-`levels/levelBreakdowns/` Input files from manual analysis
+`agents/MatticoliKumykova/` Our custom Mario agent
+- `Agent.java` - Agent source code
 
-`levels/autoAnalysis/` Sample output from analyzer
-
-`levelGenerators/Markov/` Markov level generator package (Generates level from MarkovModel object)
-
-`Markov/` package containing MarkovModel utility class (contains file IO, level analyzer, and Markov file format)
-
-## MarkovModel File Format
-```
-3 2  // 3 chunks, height 2
-0.5 0.5 0 // transition probabilities for all chunks in order (space-separated)
--------------
--------------
--------------
--------------
--------------
--------------
--------------
--------------
--------------
--------------
--------------
--------------
-%%%%%%%%%%%%%
-|||||||||||||
-|||||||||||||
-|||||||||||||
-0.5 0 0.5 // next chunk
-...
-```
+`src/PlayLevel.java` Launch level with agent
