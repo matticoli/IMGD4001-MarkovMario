@@ -154,7 +154,7 @@ public class Agent implements MarioAgent {
         int[] above = new int[]{getLocation(1, -1, scene), getLocation(1, -2, scene), getLocation(1, -3, scene)};
 
         for (int i = 0; i < above.length; i++) {
-            if (above[i] == 24 || above[i] == 17 || above[i] == 22) {
+            if (above[i] == 24 || above[i] == 17) {
                 return true;
             }
         }
@@ -203,7 +203,7 @@ public class Agent implements MarioAgent {
      * Mario
      *
      * @param scene
-     * @return true if pipe exists; else false
+     * @return true if obstacle of specified type exists; else false
      */
     private boolean thereIsObstacle(int[][] scene) {
         int[] inFrontOf = new int[] { getLocation(1, 0, scene), getLocation(2, 0, scene) };
@@ -283,10 +283,10 @@ public class Agent implements MarioAgent {
             if (dangerOfGap && marioSpeed > 0) {
                 setJump(JumpType.GAP, marioSpeed < 6 ? (int) (9 - marioSpeed) : 1);
             } else if (marioSpeed <= 1 && !dangerOfEnemyAbove && wallHeight > 0) {
-                setJump(JumpType.WALL, wallHeight >= 4 ? wallHeight + 3 : wallHeight);
+                setJump(JumpType.WALL, wallHeight >= 4 ? wallHeight + 3 : (wallHeight + (int)(Math.random() * 3)));
             } else if (dangerOfEnemy && !(dangerOfEnemyAbove && marioSpeed > 2)) {
                 //action[MarioActions.LEFT.getValue()] = ((dangerOfEnemy && dangerOfEnemyAbove) || dangerOfGap);
-                if(maybe(25)){
+                if(maybe(40)){
                     state = State.SKITTISH;
                 } else {
                     setJump(JumpType.ENEMY, 6);
@@ -298,7 +298,7 @@ public class Agent implements MarioAgent {
                     setJump(JumpType.POWERUP, 5);
                 }
             } else if(obstacle){
-                //state = State.BACKWARDS;
+                state = State.BACKWARDS;
             }
         } else {
             jumpCount++;
@@ -333,13 +333,7 @@ public class Agent implements MarioAgent {
                 break;
             case SKITTISH:
                 System.out.println("am skittish");
-//                action[MarioActions.LEFT.getValue()] = isFalling && ((dangerOfEnemy && dangerOfEnemyAbove) || dangerOfGap);
-//                System.out.println("We are skittish!");
-//                for(int i = 0; i < action.length; i++) {
-//                    action[i] = false;
-//                }
-//
-//                setJump(JumpType.ENEMY, 7);
+
                 if(skit_count < 3){
                     action[MarioActions.LEFT.getValue()] = true;
                     action[MarioActions.RIGHT.getValue()] = false;
@@ -354,7 +348,7 @@ public class Agent implements MarioAgent {
                 break;
             case BACKWARDS:
                 System.out.println("moving backwards!");
-                if(back_count < 2){
+                if(back_count < Math.random() * 3){
                     action[MarioActions.LEFT.getValue()] = true;
                     action[MarioActions.RIGHT.getValue()] = false;
                     back_count++;
