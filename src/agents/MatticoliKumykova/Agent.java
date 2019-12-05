@@ -18,7 +18,7 @@ public class Agent implements MarioAgent {
      * Identify different things a player might jump over
      */
     private enum JumpType {
-        ENEMY, GAP, WALL, NONE
+        ENEMY, GAP, WALL, NONE, POWERUP
         //TODO: Maybe add up jump state where we jump up from idle?
     }
 
@@ -63,6 +63,9 @@ public class Agent implements MarioAgent {
     private float prevY = 0; // Previous y coordinate of Mario
     private boolean[] action; // Action array, returned by getActions
         // (defines Mario control input on each iteration of game loop)
+    int skit_count = 0;
+    int back_count = 0;
+
 
     /**
      * Initialize agent
@@ -73,7 +76,7 @@ public class Agent implements MarioAgent {
     public void initialize(MarioForwardModel model, MarioTimer timer) {
         action = new boolean[MarioActions.numberOfActions()];
         action[MarioActions.RIGHT.getValue()] = true;
-        action[MarioActions.SPEED.getValue()] = true;
+        action[MarioActions.SPEED.getValue()] = false;
     }
 
     /**
@@ -143,19 +146,19 @@ public class Agent implements MarioAgent {
 
     /**
      * Checks if block is powerup block
-     * @param tileX block x
-     * @param tileY block y
-     * @param levelScene level
+     * @param scene block x
      * @return true if block is powerup, else false
      */
-    private boolean isPowerupBlock(int tileX, int tileY, int[][] levelScene) {
+    private boolean isPowerupBlock(int[][] scene) {
         //TODO: Implement
-//        for (int y = tileY + 1; y < levelScene[0].length; y++) {
-//            if (levelScene[tileX + 1][y] != 0) {
-//                return false;
-//            }
-//        }
-        return true;
+        int[] above = new int[]{getLocation(1, -1, scene), getLocation(1, -2, scene), getLocation(1, -3, scene)};
+
+        for (int i = 0; i < above.length; i++) {
+            if (above[i] == 24 || above[i] == 17 || above[i] == 22) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -180,6 +183,77 @@ public class Agent implements MarioAgent {
     }
 
     /**
+     * Utility function provided by michal; translates relative coordiantes
+     * into actual location in level for block given
+     *
+     * @param relX
+     * @param relY
+     * @param scene level reference
+     * @return block coords in level
+     */
+    private int getLocation(int relX, int relY, int[][] scene) {
+        int realX = 8 + relX;
+        int realY = 8 + relY;
+
+        return scene[realX][realY];
+    }
+
+    /**
+     * Utility function provided by michal; searches for pipes in front and below
+     * Mario
+     *
+     * @param scene
+     * @return true if pipe exists; else false
+     */
+    private boolean thereIsObstacle(int[][] scene) {
+        int[] inFrontOf = new int[] { getLocation(1, 0, scene), getLocation(2, 0, scene) };
+
+        for (int i = 0; i < inFrontOf.length; i++) {
+            if (inFrontOf[i] == 17 || inFrontOf[i] == 23 || inFrontOf[i] == 24) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Utility function provided by michal; searches are in front of Mario for empty blocks
+     *
+     * @param scene
+     * @return false if empty block; else true
+     */
+    private boolean thereIsHole(int[][] scene) {
+        for (int i = 1; i < 3; i++) {
+            for (int j = 2; j < 8; j++) {
+                if (getLocation(i, j, scene) != 0) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Utility function provided by michal; searches for enemies directly in front
+     * and below Mario
+     *
+     * @param enemies
+     * @return true if enemy found; else false
+     */
+    private boolean enemyInFront(int[][] enemies) {
+        for (int i = 0; i > -2; i--) {
+            for (int j = 1; j < 2; j++) {
+                if (getLocation(j, i, enemies) > 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Game loop
      *
      * @param model a forward model object so the agent can simulate the future.
@@ -190,6 +264,12 @@ public class Agent implements MarioAgent {
     public boolean[] getActions(MarioForwardModel model, MarioTimer timer) {
         // Get state of Mario's environment (detect obstacles/goals) - partly borrowed from trondEllingsen
         // TODO: Do the rectangles change based on moving left vs right?
+        int[][] enemies = model.getMarioEnemiesObservation();
+        int[][] scene = model.getMarioSceneObservation();
+        final boolean obstacle = thereIsObstacle(scene);
+        final boolean powerUp = isPowerupBlock(scene);
+        final boolean overheadBlock = checkIfOverheadBlock(model.getMarioScreenTilePos()[0], model.getMarioScreenTilePos()[1], model.getScreenSceneObservation());//, world, model);
+
         final float marioSpeed = model.getMarioFloatVelocity()[0];
         final boolean dangerOfEnemy = enemyInRange(model, new Rectangle(-13, -57, 105, 87));
         final boolean dangerOfEnemyAbove = enemyInRange(model, new Rectangle(-28, 28, 58, 45));
@@ -205,17 +285,30 @@ public class Agent implements MarioAgent {
             } else if (marioSpeed <= 1 && !dangerOfEnemyAbove && wallHeight > 0) {
                 setJump(JumpType.WALL, wallHeight >= 4 ? wallHeight + 3 : wallHeight);
             } else if (dangerOfEnemy && !(dangerOfEnemyAbove && marioSpeed > 2)) {
-                setJump(JumpType.ENEMY, 7);
+                //action[MarioActions.LEFT.getValue()] = ((dangerOfEnemy && dangerOfEnemyAbove) || dangerOfGap);
+                if(maybe(25)){
+                    state = State.SKITTISH;
+                } else {
+                    setJump(JumpType.ENEMY, 6);
+                }
+
+            } else if(powerUp){
+                if(maybe(3)){
+                System.out.println("I detect a powerup!");
+                    setJump(JumpType.POWERUP, 5);
+                }
+            } else if(obstacle){
+                //state = State.BACKWARDS;
             }
         } else {
             jumpCount++;
         }
 
         final boolean isFalling = prevY < model.getMarioFloatPos()[1] && jumpType.equals(JumpType.NONE);
-
         // Define action based on state
         switch(state) {
             case IDLE:
+                System.out.println("Am idle");
                 // Sit and contemplate life (set all inputs to false)
                 for(int i = 0; i < action.length; i++) {
                     action[i] = false;
@@ -233,11 +326,46 @@ public class Agent implements MarioAgent {
                         if(jumpType.equals(JumpType.NONE)) {
                             jumpType = JumpType.WALL;
                             jumpCount = 0;
-                            jumpSize =
+                            jumpSize = 4;
                         }
                     }
                 }
                 break;
+            case SKITTISH:
+                System.out.println("am skittish");
+//                action[MarioActions.LEFT.getValue()] = isFalling && ((dangerOfEnemy && dangerOfEnemyAbove) || dangerOfGap);
+//                System.out.println("We are skittish!");
+//                for(int i = 0; i < action.length; i++) {
+//                    action[i] = false;
+//                }
+//
+//                setJump(JumpType.ENEMY, 7);
+                if(skit_count < 3){
+                    action[MarioActions.LEFT.getValue()] = true;
+                    action[MarioActions.RIGHT.getValue()] = false;
+                    action[MarioActions.SPEED.getValue()] = false;
+
+                    skit_count++;
+                } else {
+                    state = State.ONWARDS;
+                    skit_count = 0;
+                }
+
+                break;
+            case BACKWARDS:
+                System.out.println("moving backwards!");
+                if(back_count < 2){
+                    action[MarioActions.LEFT.getValue()] = true;
+                    action[MarioActions.RIGHT.getValue()] = false;
+                    back_count++;
+                } else {
+                    state = state.ONWARDS;
+                    back_count = 0;
+                }
+                break;
+            case ONWARDS:
+                System.out.println("am going onwards!");
+                //break;
             default:
                 action[MarioActions.LEFT.getValue()] = isFalling && ((dangerOfEnemy && dangerOfEnemyAbove) || dangerOfGap);
                 action[MarioActions.RIGHT.getValue()] = !isFalling && !(dangerOfEnemyAbove && jumpType == JumpType.WALL);
@@ -251,6 +379,6 @@ public class Agent implements MarioAgent {
 
     @Override
     public String getAgentName() {
-        return "TrondEllingsen";
+        return "MatticoliKumykova";
     }
 }

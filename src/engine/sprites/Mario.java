@@ -26,8 +26,8 @@ public class Mario extends MarioSprite {
     // stats
     private float xJumpStart = -100;
 
-    private final float GROUND_INERTIA = 0.89f;
-    private final float AIR_INERTIA = 0.89f;
+    private final float GROUND_INERTIA = 0.75f;
+    private final float AIR_INERTIA = 0.75f;
     private final int POWERUP_TIME = 3;
 
     public Mario(boolean visuals, float x, float y) {
@@ -70,15 +70,20 @@ public class Mario extends MarioSprite {
     }
 
     private boolean move(float xa, float ya) {
-	while (xa > 8) {
+		if(!actions[MarioActions.RIGHT.getValue()]&&!actions[MarioActions.LEFT.getValue()])
+		{
+			xa=0f;
+		}
+
+		while (xa > 8) {
 	    if (!move(8, 0))
 		return false;
-	    xa -= 8;
+	    xa -= 6;
 	}
-	while (xa < -8) {
-	    if (!move(-8, 0))
+	while (xa < -6) {
+	    if (!move(-6, 0))
 		return false;
-	    xa += 8;
+	    xa += 6;
 	}
 	while (ya > 8) {
 	    if (!move(0, 8))
