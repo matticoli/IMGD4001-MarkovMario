@@ -283,6 +283,7 @@ public class Agent implements MarioAgent {
             if (dangerOfGap && marioSpeed > 0) {
                 setJump(JumpType.GAP, marioSpeed < 6 ? (int) (9 - marioSpeed) : 1);
             } else if (marioSpeed <= 1 && !dangerOfEnemyAbove && wallHeight > 0) {
+                System.out.println("jumping bc wall!");
                 setJump(JumpType.WALL, wallHeight >= 4 ? wallHeight + 3 : (wallHeight + (int)(Math.random() * 3)));
             } else if (dangerOfEnemy && !(dangerOfEnemyAbove && marioSpeed > 2)) {
                 //action[MarioActions.LEFT.getValue()] = ((dangerOfEnemy && dangerOfEnemyAbove) || dangerOfGap);
@@ -298,7 +299,7 @@ public class Agent implements MarioAgent {
                     setJump(JumpType.POWERUP, 5);
                 }
             } else if(obstacle){
-                state = State.BACKWARDS;
+                //state = State.BACKWARDS;
             }
         } else {
             jumpCount++;
