@@ -18,3 +18,10 @@ If prompted, select installed SDK from the dropdown (Tested on Java 8 and 11)
 ## References
 `agents/trondEllingsen` Trond Ellingsen sample agent
 `agents/michal` Michal sample agent
+
+
+
+## Copyrights
+This project is based off of [amidos2006's Mario AI Framework](https://github.com/amidos2006/Mario-AI-Framework) - see copyright disclaimer below
+
+This framework is not endorsed by Nintendo and is only intended for research purposes. Mario is a Nintendo character which the authors don't own any rights to. Nintendo is also the sole owner of all the graphical assets in the game. Any use of this framework is expected to be on a non-commercial basis. This framework was created by Ahmed Khalifa, based on the original Mario AI Framework by Sergey Karakovskiy, Noor Shaker, and Julian Togelius, which in turn was based on Infinite Mario Bros by Markus Persson.
